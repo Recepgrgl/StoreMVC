@@ -1,0 +1,123 @@
+﻿@model List<Product>
+@{
+}
+
+<style type="text/css">
+    .searchbar {
+        margin-bottom: auto;
+        margin-top: auto;
+        height: 60px;
+        background-color: #353b48;
+        border-radius: 30px;
+        padding: 10px;
+    }
+
+    .search_input {
+        color: white;
+        border: 0;
+        outline: 0;
+        background: none;
+        width: 0;
+        caret-color: transparent;
+        line-height: 40px;
+        transition: width 0.4s linear;
+    }
+
+    .searchbar:hover > .search_input {
+        padding: 0 10px;
+        width: 450px;
+        caret-color: red;
+        transition: width 0.4s linear;
+    }
+
+    .searchbar:hover > .search_icon {
+        background: white;
+        color: #e74c3c;
+    }
+
+    .search_icon {
+        height: 40px;
+        width: 40px;
+        float: right;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+    }
+</style>
+
+<h2 class="text-center mb-5">List of Products</h2>
+<div class="row mb-5">
+    <div class="col">
+        <a class="btn btn-primary" asp-controller="Products" asp-action="Create">New Product</a>
+    </div>
+    <div class="col">
+        <div class="d-flex justify-content-center h-100">
+            <div class="searchbar" id="Recep">
+                <input class="search_input" type="text" name="" placeholder="Search...">
+                <a href="#" id ="arama_butonu" class="search_icon"><i class="fas fa-search"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>Created At</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Brand</td>
+                <td>@product.Category</td>
+                <td>@(product.Price)$</td>
+                <td><img src="/products/@product.ImageFileName" width="100"/></td>
+                <td>@product.CreatedAt.ToString("MM/dd/yyyy")</td>
+                <td style="white-space:nowrap">
+                        <a class="btn btn-primary btn-sm" asp-controller="Products" asp-action="Edit"
+                            asp-route-id="@product.Id">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Products" asp-action="Delete"
+                            asp-route-id="@product.Id" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+
+            </tr>
+            
+        }
+
+    </tbody>
+</table>
+
+@section Scripts 
+{
+    <script type ="text/javascript">
+        $(function () {
+            
+            $("#arama_butonu").click(function (e) {
+
+                var input = $(".search_input").val();
+
+                window.location = "https://localhost:7030/Products?s=" + input;
+                
+            });
+        });
+
+
+    </script>
+}
